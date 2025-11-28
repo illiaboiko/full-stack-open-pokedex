@@ -14,13 +14,15 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - name: Install dependencies
+      - name: Install dependencies for main app
         run: npm install
       - name: Check style
         run: npm run eslint
       - name: Hello World
         run: echo "hello world!"
-      - name: Testing
-        run: npm test
       - name: Building
         run: npm run build
+      - name: Install dependencies for the Playwright tests
+        run: cd e2e-playwright && npm install
+      - name: Testing
+        run: npm run test:e2e
