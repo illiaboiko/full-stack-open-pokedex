@@ -20,3 +20,7 @@ jobs:
         run: npm run eslint
       - name: Hello World
         run: echo "hello world!"
+      - name: Testing
+        run: npm test
+      - name: Building
+        run: npm build
