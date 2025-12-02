@@ -6,4 +6,4 @@ echo "installing packages"
 npm ci
 
 echo "building front-end"
-npm build
+npm run build
