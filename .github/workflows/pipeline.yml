@@ -6,7 +6,6 @@ on:
       - main
   pull_request:
     branches: [main]
-    types: [opened, synchronize]
 
 jobs:
   simple_deployment_pipeline:
@@ -48,12 +47,22 @@ jobs:
         env:
           COMMITS: ${{ toJson(github.event.commits) }}
         run: echo "$COMMITS"
+        
       - name: commit messages
+        id: step_messages
         env:
           COMMIT_MESSAGES: ${{ toJson(github.event.commits.*.message) }}
-        run: echo "$COMMIT_MESSAGES"
+        run: echo "$COMMIT_MESSAGES" && echo "commit_messages_string=$COMMIT_MESSAGES" >> $GITHUB_OUTPUT
+        
+      - name: Skip Condition
+        id: step_skip
+        env:
+          SKIP: ${{ contains(join(steps.step_messages.outputs.commit_messages_string, ' '), "#skip") }}
+        run: echo "$SKIP" && echo "skip_value=$SKIP" >> $GITHUB_OUTPUT
+        
       - name: Bump version and push tag
-        if: ${{ github.event_name == 'push' }}
+        if: ${{ github.event_name == 'push' && steps.step_skip.outputs.skip_value == 'false' }}
+        
         uses: anothrNick/github-tag-action@v1
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN }}
