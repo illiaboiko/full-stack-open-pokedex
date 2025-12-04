@@ -57,7 +57,7 @@ jobs:
       - name: Skip Condition
         id: step_skip
         env:
-          SKIP: ${{ contains(join(steps.step_messages.outputs.commit_messages_string, ' '), "#skip") }}
+          SKIP: ${{ contains(join(steps.step_messages.outputs.commit_messages_string, ' '), '#skip') }}
         run: echo "$SKIP" && echo "skip_value=$SKIP" >> $GITHUB_OUTPUT
         
       - name: Bump version and push tag
