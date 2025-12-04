@@ -33,6 +33,16 @@ jobs:
       - name: Trigger deployment
         if: ${{ github.event_name == 'push' }} # deployment is only for merging a PR with the main branch
         run: curl https://api.render.com/deploy/${{ secrets.RENDER_SERVICE_ID }}?key=${{ secrets.RENDER_DEPLOY_HOOK_KEY }}
+
+        
+      - name: Test Success
+        uses: rjstone/discord-webhook-notify@v2.2.1
+        if: success()
+        with:
+            webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+            severity: info
+            details: All tests passed!
+
         
   tag_release:
     needs: [simple_deployment_pipeline]
