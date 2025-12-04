@@ -36,7 +36,7 @@ jobs:
 
         
       - name: Test Success
-        uses: rjstone/discord-webhook-notify@v2.2.1
+        uses: rjstone/discord-webhook-notify@v2
         if: success()
         with:
             webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
