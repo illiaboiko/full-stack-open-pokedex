@@ -58,7 +58,8 @@ jobs:
         env:
           SKIP: ${{ contains(join(github.event.commits.*.message, ' '), '#skip') }}
         run: echo "$SKIP" && echo "skip_value=$SKIP" >> $GITHUB_OUTPUT
-        
+
+       # this comment is added just to test the skip commit 
       - name: Bump version and push tag
         if: ${{ github.event_name == 'push' && steps.step_skip.outputs.skip_value == 'false' }}
         
