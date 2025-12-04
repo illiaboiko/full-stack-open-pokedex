@@ -35,7 +35,12 @@ jobs:
         if: ${{ github.event_name == 'push' }} # deployment is only for merging a PR with the main branch
         run: curl https://api.render.com/deploy/${{ secrets.RENDER_SERVICE_ID }}?key=${{ secrets.RENDER_DEPLOY_HOOK_KEY }}
         
+  tag_release:
+    needs: [simple_deployment_pipeline]
+    runs-on: ubuntu-latest
+    steps:
       - name: Bump version and push tag
+        if: ${{ github.event_name == 'push' }}
         uses: anothrNick/github-tag-action@v1
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN }}
