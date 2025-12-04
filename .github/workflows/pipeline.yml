@@ -49,15 +49,14 @@ jobs:
         run: echo "$COMMITS"
         
       - name: commit messages
-        id: step_messages
         env:
           COMMIT_MESSAGES: ${{ toJson(github.event.commits.*.message) }}
-        run: echo "$COMMIT_MESSAGES" && echo "commit_messages_string=$COMMIT_MESSAGES" >> $GITHUB_OUTPUT
+        run: echo "$COMMIT_MESSAGES"
         
       - name: Skip Condition
         id: step_skip
         env:
-          SKIP: ${{ contains(join(steps.step_messages.outputs.commit_messages_string, ' '), '#skip') }}
+          SKIP: ${{ contains(join(github.event.commits.*.message, ' '), '#skip') }}
         run: echo "$SKIP" && echo "skip_value=$SKIP" >> $GITHUB_OUTPUT
         
       - name: Bump version and push tag
